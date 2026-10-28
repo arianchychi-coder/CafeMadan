@@ -49,11 +49,7 @@ const addInfo = async(req,res,next)=>{
 
     try {
 
-        const exitPhone = await HamaeshModel.getByPhone(phone)
-
-        if (!exitPhone) {
-            throw new AppError("این شماره قبلا ثبت شده است",400,"THIS_PHONENUMBER_WAS_REGISTERD")
-        }
+        
         
         const result = await HamaeshModel.addInfo(name,phone,role,companyname)
 
