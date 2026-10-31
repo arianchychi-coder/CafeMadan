@@ -73,9 +73,7 @@ const addInfo = async(req,res,next)=>{
         })
 
     } catch (error) {
-        return next(
-            new AppError("Err in server",500,"ERR_IN_SERVER")
-        )
+         return next(error);
     }
 
 }
