@@ -48,8 +48,20 @@ const addInfo = async(req,res,next)=>{
 
 
     try {
+
+        const exitUserByPhone = await HamaeshModel.getByPhone(phone.trim())
+
+        if (exitUserByPhone) {
+            return next(
+                new AppError(
+                    "این شماره موبایل قبلا ثبت شده است",
+                    409,
+                    "THIS_PHONE_WAS_REGISTER"
+                )
+            );
+        }
         
-        const result = await HamaeshModel.addInfo(name,phone,role,companyname)
+        const result = await HamaeshModel.addInfo(name,phone.trim(),role,companyname)
 
         if (!result) {
             throw new AppError("Err in save data",401,"ERR_IN_SAVE_DATA")
