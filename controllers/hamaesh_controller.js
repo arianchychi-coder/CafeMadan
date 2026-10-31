@@ -5,7 +5,7 @@ const Joi = require("joi")
 
 const registerSchema = Joi.object({
     name:Joi.string().required(),
-    phone:Joi.string().min(11).required(),
+    phone:Joi.string().trim().pattern(/^09\d{9}$/).required(),
     role:Joi.string().required(),
     companyname:Joi.string().required()
 })
@@ -41,7 +41,7 @@ const addInfo = async(req,res,next)=>{
     const {error} = validate(registerSchema, req.body)
 
     if (error) {
-        throw new AppError(error.details[0].message,400,"VALIDATION_ERROR")
+        return next(new AppError(error.details[0].message,400,"VALIDATION_ERROR"))
     }
 
     const {name,phone,role,companyname} = req.body
