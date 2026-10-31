@@ -1,0 +1,633 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b1120">
+    <title>پنل مدیریت</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --bg: #0b1120;
+            --surface: #111b2e;
+            --surface2: #17243a;
+            --border: #25344d;
+            --text: #edf4ff;
+            --muted: #91a4c0;
+            --blue: #6195ff;
+            --green: #35d6aa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazirmatn', Tahoma, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        /* Header */
+
+        .header {
+            min-height: 85px;
+            padding: 16px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            background: rgba(17, 27, 46, .95);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, #477cff, #755bff);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px #477cff35;
+        }
+
+        .logo svg {
+            width: 27px;
+            height: 27px;
+        }
+
+        .brand h1 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .brand p {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 3px;
+        }
+
+        .admin-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #1c3041;
+            border: 1px solid #285347;
+            color: #55dfb5;
+            border-radius: 30px;
+            padding: 9px 15px;
+            font-size: 12px;
+        }
+
+        .admin-badge span {
+            width: 8px;
+            height: 8px;
+            background: var(--green);
+            border-radius: 50%;
+        }
+
+        /* Main */
+
+        .container {
+            max-width: 1450px;
+            margin: auto;
+            padding: 35px 5%;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h2 {
+            font-size: 23px;
+            font-weight: 700;
+        }
+
+        .page-heading p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 7px;
+        }
+
+        /* Stats */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            position: relative;
+            overflow: hidden;
+            min-height: 145px;
+            padding: 23px;
+            border-radius: 17px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+
+        .stat-card::after {
+            content: "";
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            left: -35px;
+            bottom: -55px;
+            border-radius: 50%;
+            background: var(--glow);
+            filter: blur(35px);
+            opacity: .3;
+        }
+
+        .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stat-title {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .stat-icon {
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: var(--icon-bg);
+            color: var(--icon-color);
+            font-size: 21px;
+        }
+
+        .stat-value {
+            display: block;
+            margin-top: 14px;
+            font-size: 30px;
+            font-weight: 800;
+            direction: ltr;
+            text-align: right;
+        }
+
+        .stat-description {
+            display: block;
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 3px;
+        }
+
+        .visitors {
+            --glow: #4385ff;
+            --icon-bg: #1c345c;
+            --icon-color: #79aaff;
+            border-color: #294b79;
+        }
+
+        .participants {
+            --glow: #35d6aa;
+            --icon-bg: #173c39;
+            --icon-color: #46e0b5;
+        }
+
+        .management {
+            --glow: #a17aff;
+            --icon-bg: #33294f;
+            --icon-color: #b99bff;
+        }
+
+        /* Toolbar */
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 17px;
+        }
+
+        .toolbar h3 {
+            font-size: 17px;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .export-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 17px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--surface2);
+            color: var(--text);
+            cursor: pointer;
+            transition: .2s;
+            font-size: 12px;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+            background: #223653;
+        }
+
+        .csv-btn {
+            color: #48dfb0;
+            border-color: #235a4b;
+        }
+
+        .pdf-btn {
+            color: #88aaff;
+            border-color: #304a80;
+        }
+
+        /* Table */
+
+        .table-container {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .table-scroll {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 750px;
+            border-collapse: collapse;
+            text-align: right;
+        }
+
+        thead {
+            background: #192941;
+        }
+
+        th {
+            padding: 19px 24px;
+            color: #a9bfdc;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 17px 24px;
+            font-size: 13px;
+            border-top: 1px solid #1e2d44;
+            white-space: nowrap;
+        }
+
+        tbody tr {
+            transition: .2s;
+        }
+
+        tbody tr:hover {
+            background: #192940;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #131f33;
+        }
+
+        tbody tr:nth-child(even):hover {
+            background: #1c3049;
+        }
+
+        .role {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            background: #293c59;
+            color: #b8d0f4;
+            font-size: 11px;
+        }
+
+        .role.admin {
+            background: #263b78;
+            color: #91b4ff;
+        }
+
+        /* Footer */
+
+        .footer {
+            text-align: center;
+            color: #61738e;
+            font-size: 11px;
+            padding: 30px 10px;
+        }
+
+        /* Responsive */
+
+        @media(max-width: 850px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .container {
+                padding: 28px 4%;
+            }
+        }
+
+        @media(max-width: 550px) {
+            .header {
+                padding: 15px 18px;
+            }
+
+            .brand h1 {
+                font-size: 15px;
+            }
+
+            .brand p {
+                font-size: 10px;
+            }
+
+            .logo {
+                width: 41px;
+                height: 41px;
+            }
+
+            .admin-badge {
+                padding: 7px 10px;
+                font-size: 10px;
+            }
+
+            .container {
+                padding: 25px 15px;
+            }
+
+            .page-heading h2 {
+                font-size: 19px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .stat-card {
+                min-height: 130px;
+                padding: 14px;
+                border-radius: 13px;
+            }
+
+            .stat-title {
+                font-size: 11px;
+            }
+
+            .stat-icon {
+                width: 34px;
+                height: 34px;
+                font-size: 17px;
+            }
+
+            .stat-value {
+                font-size: 24px;
+            }
+
+            .stat-description {
+                font-size: 10px;
+            }
+
+            .toolbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .export-buttons {
+                width: 100%;
+            }
+
+            .export-btn {
+                flex: 1;
+                padding: 11px 7px;
+                font-size: 11px;
+            }
+
+            .table-container {
+                border-radius: 12px;
+            }
+
+            th, td {
+                padding: 15px 17px;
+            }
+        }
+
+        /* Print */
+
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+            }
+
+            .header, .toolbar, .stats-grid, .footer {
+                display: none !important;
+            }
+
+            .container {
+                padding: 0;
+            }
+
+            .table-container {
+                background: white;
+                border: 1px solid #ccc;
+                overflow: visible;
+            }
+
+            .table-scroll {
+                overflow: visible;
+            }
+
+            table {
+                min-width: 0;
+                width: 100%;
+            }
+
+            th, td {
+                color: black !important;
+                background: white !important;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="header">
+
+        <div class="brand">
+
+            <div class="logo">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2L21 6V12C21 17 17 21 12 23C7 21 3 17 3 12V6L12 2Z"
+                        stroke="white" stroke-width="1.7"/>
+                    <path d="M8 12L11 15L16 9"
+                        stroke="white" stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"/>
+                </svg>
+            </div>
+
+            <div>
+                <h1>پنل مدیریت همایش</h1>
+                <p>مدیریت و نظارت بر شرکت‌کنندگان</p>
+            </div>
+
+        </div>
+
+        <div class="admin-badge">
+            <span></span>
+            مدیر سیستم
+        </div>
+
+    </header>
+
+    <main class="container">
+
+        <!-- Heading -->
+        <div class="page-heading">
+            <h2>داشبورد مدیریتی</h2>
+            <p>خلاصه وضعیت سایت و اطلاعات ثبت‌نام‌کنندگان</p>
+        </div>
+
+        <!-- Statistics -->
+        <section class="stats-grid">
+
+            <div class="stat-card visitors">
+
+                <div class="stat-top">
+                    <span class="stat-title">بازدید سایت</span>
+                    <div class="stat-icon">◉</div>
+                </div>
+
+                <strong class="stat-value" id="visitCount">0</strong>
+
+                <small class="stat-description">
+                    مجموع بازدیدهای ثبت شده
+                </small>
+
+            </div>
+
+            <div class="stat-card participants">
+
+                <div class="stat-top">
+                    <span class="stat-title">شرکت‌کنندگان</span>
+                    <div class="stat-icon">♙</div>
+                </div>
+
+                <strong class="stat-value" id="participantCount">-</strong>
+
+                <small class="stat-description">
+                    افراد ثبت‌نام شده در همایش
+                </small>
+
+            </div>
+
+            <div class="stat-card management">
+
+                <div class="stat-top">
+                    <span class="stat-title">وضعیت پنل</span>
+                    <div class="stat-icon">⚙</div>
+                </div>
+
+                <strong class="stat-value" style="font-size:22px">
+                    فعال
+                </strong>
+
+                <small class="stat-description">
+                    سیستم مدیریت آماده به کار است
+                </small>
+
+            </div>
+
+        </section>
+
+        <!-- Toolbar -->
+        <section class="toolbar">
+
+            <h3>لیست افراد شرکت‌کننده در همایش</h3>
+
+            <div class="export-buttons">
+
+                <button type="button"
+                    class="export-btn csv-btn"
+                    onclick="exportCSV()">
+                    ⇩ خروجی CSV
+                </button>
+
+                <button type="button"
+                    class="export-btn pdf-btn"
+                    onclick="exportPDF()">
+                    ⇩ خروجی PDF
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- Table -->
+        <section class="table-container">
+
+            <div class="table-scroll">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>نام و نام خانوادگی</th>
+                            <th>شماره تلفن</th>
+                            <th>نقش</th>
+                            <th>نام شرکت</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="table-body">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        سامانه مدیریت همایش
+    </footer>
+
+    <script src="../js/admin.js" defer></script>
+    <script src="../js/viste.js" defer></script>
+
+</body>
+</html>
