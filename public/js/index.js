@@ -49,7 +49,7 @@ document.getElementById("registerform").addEventListener("submit", async functio
     } catch (error) {
         console.error("Error:", error);
          showRegisterMessage(
-        "ارتباط با سرور برقرار نشد. لطفاً دوباره تلاش کنید.",
+            data.message ||
         "error"
     );
     }
